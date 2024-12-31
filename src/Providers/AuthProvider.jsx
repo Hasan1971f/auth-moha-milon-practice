@@ -7,19 +7,24 @@ import { useState } from 'react';
 
 const AuthProvider = ({children}) => {
 
+    const [loading, setLoading] = useState(true)
+
     const [user, setUser] =useState(null)
 
-    const name = "potato alu mia"
+   
 
     const createUser = (email, password)=>{
         return createUserWithEmailAndPassword(auth, email, password)
+        setLoading(true)
     }
 
     const signInUser = (email, password) =>{
+        setLoading(true)
         return signInWithEmailAndPassword(auth, email, password)
     }
 
     const signOutUser = () =>{
+        setLoading(true)
         return signOut(auth)
     }
 
@@ -27,6 +32,7 @@ const AuthProvider = ({children}) => {
        const unSubscribe = onAuthStateChanged(auth, currentUser=>{
             console.log('current user', currentUser)
             setUser(currentUser)
+            setLoading(false)
         })
         return () =>{
             unSubscribe()
@@ -45,8 +51,9 @@ const AuthProvider = ({children}) => {
     // })
 
    const authInfo = {
-       name,
+     
        user,
+       loading,
        createUser,
        signInUser,
        signOutUser
